@@ -4,7 +4,6 @@ services:
     env: docker
     dockerfilePath: Dockerfile
     plan: free
-    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:10000
     envVars:
       - key: DEBUG
         value: "0"
