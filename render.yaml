@@ -2,7 +2,7 @@ services:
   - type: web
     name: bharatnatayam-web
     env: docker
-    dockerfilepath: Dockerfile
+    dockerfilePath: Dockerfile
     plan: free
     startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:10000
     envVars:
