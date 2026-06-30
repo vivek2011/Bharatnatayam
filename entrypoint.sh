@@ -1,12 +1,14 @@
 #!/bin/sh
 
-echo "Waiting for postgres..."
-
-while ! nc -z $SQL_HOST $SQL_PORT; do
-  sleep 0.1
-done
-
-echo "PostgreSQL started"
+if [ -n "$SQL_HOST" ] && [ -n "$SQL_PORT" ]; then
+    echo "Waiting for postgres ($SQL_HOST:$SQL_PORT)..."
+    while ! nc -z $SQL_HOST $SQL_PORT; do
+      sleep 0.1
+    done
+    echo "PostgreSQL started"
+else
+    echo "SQL_HOST or SQL_PORT not defined, skipping wait check."
+fi
 
 # Run migrations and collect static files
 python manage.py migrate

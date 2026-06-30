@@ -1,0 +1,2 @@
+# Force line endings to LF for shell scripts to prevent container boot failures on Linux hosts
+entrypoint.sh text eol=lf

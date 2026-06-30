@@ -1,7 +1,7 @@
 services:
   - type: web
     name: bharatnatayam-web
-    env: docker
+    runtime: docker
     dockerfilePath: Dockerfile
     plan: free
     envVars:
