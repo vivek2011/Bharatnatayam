@@ -1,0 +1,500 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}Media Gallery - Lakshmi Etram Cultural Society{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-hero {
+        position: relative;
+        padding: 100px 0 50px 0;
+        background: radial-gradient(circle at 50% 20%, rgba(229, 169, 59, 0.08) 0%, rgba(9, 9, 12, 0) 50%);
+    }
+    
+    .gallery-grid {
+        padding-bottom: 80px;
+    }
+    
+    .custom-filter-group {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 30px;
+        padding: 6px;
+        display: inline-flex;
+    }
+    
+    .btn-filter {
+        color: var(--text-secondary);
+        border: none;
+        background: none;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500;
+        font-size: 0.9rem;
+        padding: 8px 24px;
+        border-radius: 20px !important;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-filter:hover {
+        color: var(--text-primary);
+    }
+    
+    .btn-filter.active {
+        background-color: var(--accent);
+        color: #111;
+        font-weight: 600;
+        box-shadow: 0 4px 12px var(--accent-glow);
+    }
+    
+    .gallery-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-card);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        height: 350px;
+        cursor: pointer;
+    }
+    
+    .gallery-img-wrapper {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .gallery-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+    
+    .video-play-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3.5rem;
+        color: rgba(229, 169, 59, 0.85);
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .gallery-item:hover .video-play-overlay {
+        transform: translate(-50%, -50%) scale(1.12);
+        color: #FFFFFF;
+        text-shadow: 0 0 20px rgba(229, 169, 59, 0.8);
+    }
+    
+    .gallery-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
+        padding: 30px 20px 20px 20px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+        z-index: 3;
+    }
+    
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        border-color: var(--border-hover);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(229, 169, 59, 0.1);
+    }
+    
+    .gallery-item:hover .gallery-img {
+        transform: scale(1.08);
+    }
+    
+    .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .admin-hint-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Lightbox Premium Overlay */
+    .lightbox-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(6, 6, 8, 0.96);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    
+    .lightbox-modal.show {
+        opacity: 1;
+    }
+    
+    .lightbox-content {
+        position: relative;
+        max-width: 85%;
+        max-height: 85%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 800px;
+    }
+    
+    .lightbox-content img {
+        max-width: 100%;
+        max-height: 70vh;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+        transform: scale(0.92);
+        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    
+    .lightbox-modal.show .lightbox-content img {
+        transform: scale(1);
+    }
+    
+    .lightbox-caption {
+        margin-top: 25px;
+        color: var(--text-primary);
+        max-width: 600px;
+    }
+    
+    .lightbox-caption h3 {
+        font-family: 'Cinzel', serif;
+        color: var(--accent);
+        margin-bottom: 8px;
+        font-size: 1.5rem;
+        letter-spacing: 0.05em;
+    }
+    
+    .lightbox-close {
+        position: absolute;
+        top: 30px;
+        right: 40px;
+        color: #9CA3AF;
+        font-size: 44px;
+        font-weight: 200;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10001;
+        line-height: 1;
+    }
+    
+    .lightbox-close:hover {
+        color: var(--primary-red);
+        transform: rotate(90deg);
+    }
+    
+    .lightbox-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        color: #9CA3AF;
+        font-size: 28px;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10000;
+    }
+    
+    .lightbox-nav:hover {
+        background: var(--accent);
+        color: #111;
+        transform: translateY(-50%) scale(1.08);
+        border-color: var(--accent);
+        box-shadow: 0 0 20px var(--accent-glow);
+    }
+    
+    .lightbox-prev {
+        left: 40px;
+    }
+    
+    .lightbox-next {
+        right: 40px;
+    }
+    
+    body.lightbox-open {
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .lightbox-prev { left: 15px; }
+        .lightbox-next { right: 15px; }
+        .lightbox-nav { width: 45px; height: 45px; font-size: 20px; }
+        .lightbox-close { top: 20px; right: 20px; font-size: 35px; }
+        .lightbox-content { max-width: 95%; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Gallery Hero Section -->
+<section class="gallery-hero text-center">
+    <div class="container">
+        <span class="text-accent text-uppercase font-secondary tracking-wide fw-bold d-block mb-3" style="letter-spacing: 0.2em;">Our Gallery</span>
+        <h1 class="section-title">Visualizing the Grace</h1>
+        <p class="text-muted-custom font-secondary max-w-2xl mx-auto mb-2">Explore the performances, classes, and mudra studies at Lakshmi Etram Cultural Society</p>
+        <div class="title-line"></div>
+    </div>
+</section>
+
+<!-- Gallery Filter Controls -->
+<section class="text-center mb-4">
+    <div class="container">
+        <div class="btn-group custom-filter-group" role="group" aria-label="Media Filter">
+            <button type="button" class="btn btn-filter active" data-filter="all">All Media</button>
+            <button type="button" class="btn btn-filter" data-filter="photo">Photos</button>
+            <button type="button" class="btn btn-filter" data-filter="video">Videos</button>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Grid Section -->
+<section class="gallery-grid">
+    <div class="container">
+        {% if images or videos %}
+        <div class="row g-4 media-grid">
+            
+            <!-- Photos -->
+            {% for img in images %}
+            <div class="col-12 col-md-6 col-lg-4 media-item" data-type="photo" data-src="{{ img.image.url }}" data-title="{{ img.title }}" data-desc="{{ img.caption }}">
+                <div class="gallery-item">
+                    <div class="gallery-img-wrapper">
+                        <img src="{{ img.image.url }}" alt="{{ img.title }}" class="gallery-img">
+                        <div class="gallery-overlay">
+                            <h4 class="text-light mb-1">{{ img.title }}</h4>
+                            {% if img.caption %}
+                            <p class="text-muted-custom small mb-0 font-secondary">{{ img.caption }}</p>
+                            {% endif %}
+                            <span class="text-accent small font-secondary mt-2 d-inline-block">{{ img.uploaded_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Videos -->
+            {% for vid in videos %}
+            <div class="col-12 col-md-6 col-lg-4 media-item" data-type="video" data-src="https://www.youtube-nocookie.com/embed/{{ vid.youtube_id }}" data-title="{{ vid.title }}" data-desc="{{ vid.description }}">
+                <div class="gallery-item">
+                    <div class="gallery-img-wrapper">
+                        <img src="{{ vid.thumbnail_url }}" alt="{{ vid.title }}" class="gallery-img">
+                        <div class="video-play-overlay">
+                            <i class="bi bi-play-circle-fill"></i>
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4 class="text-light mb-1">{{ vid.title }}</h4>
+                            {% if vid.description %}
+                            <p class="text-muted-custom small mb-0 font-secondary">{{ vid.description }}</p>
+                            {% endif %}
+                            <span class="text-accent small font-secondary mt-2 d-inline-block">Video &bull; {{ vid.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+        {% else %}
+        <div class="row justify-content-center py-5">
+            <div class="col-lg-8 text-center">
+                <div class="admin-hint-card">
+                    <i class="bi bi-images text-accent fs-1 mb-3 d-block"></i>
+                    <h3 class="text-light mb-3">No Media Found</h3>
+                    <p class="text-muted-custom font-secondary mb-4">
+                        We haven't uploaded any photographs or videos yet. Log in to the administrative panel to start adding memories to our public gallery.
+                    </p>
+                    <a href="/admin/" target="_blank" class="btn btn-accent px-4 py-2 font-secondary fw-bold text-uppercase">Go to Admin Panel</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Custom Lightbox Modal -->
+<div id="customLightbox" class="lightbox-modal">
+    <span class="lightbox-close">&times;</span>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+    <button class="lightbox-nav lightbox-next" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+    <div class="lightbox-content">
+        <!-- Image Holder -->
+        <img id="lightboxImage" src="" alt="Gallery Image Expanded View">
+        <!-- Video Holder (16:9 Aspect Ratio) -->
+        <div id="lightboxVideoWrapper" style="display: none; width: 100%; aspect-ratio: 16/9; position: relative;">
+            <iframe id="lightboxIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position: absolute; top:0; left:0; width:100%; height:100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 60px rgba(0,0,0,0.8);"></iframe>
+        </div>
+        <div class="lightbox-caption">
+            <h3 id="lightboxTitle"></h3>
+            <p id="lightboxDesc" class="text-muted-custom font-secondary mb-0"></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.btn-filter');
+        const mediaItems = Array.from(document.querySelectorAll('.media-item'));
+        
+        if (mediaItems.length === 0) return;
+
+        const lightbox = document.getElementById('customLightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxVideoWrapper = document.getElementById('lightboxVideoWrapper');
+        const lightboxIframe = document.getElementById('lightboxIframe');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const lightboxDesc = document.getElementById('lightboxDesc');
+        const closeBtn = document.querySelector('.lightbox-close');
+        const prevBtn = document.querySelector('.lightbox-prev');
+        const nextBtn = document.querySelector('.lightbox-next');
+        
+        let activeItems = [...mediaItems]; // Holds items visible under the current active tab
+        let currentIndex = -1;
+        
+        // Tab Filtering Logic
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filterVal = btn.getAttribute('data-filter');
+                
+                mediaItems.forEach(item => {
+                    const type = item.getAttribute('data-type');
+                    if (filterVal === 'all' || type === filterVal) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Remap active visible elements for accurate Next/Previous cycling
+                activeItems = mediaItems.filter(item => item.style.display !== 'none');
+            });
+        });
+        
+        function openLightbox(element) {
+            currentIndex = activeItems.indexOf(element);
+            if (currentIndex === -1) return;
+            
+            const type = element.getAttribute('data-type');
+            const src = element.getAttribute('data-src');
+            const title = element.getAttribute('data-title');
+            const desc = element.getAttribute('data-desc') || '';
+            
+            lightboxTitle.innerText = title;
+            lightboxDesc.innerText = desc;
+            
+            if (type === 'photo') {
+                lightboxVideoWrapper.style.display = 'none';
+                lightboxIframe.setAttribute('src', '');
+                
+                lightboxImage.setAttribute('src', src);
+                lightboxImage.style.display = 'block';
+            } else if (type === 'video') {
+                lightboxImage.style.display = 'none';
+                lightboxImage.setAttribute('src', '');
+                
+                // Enable autoplay and JS API parameters
+                lightboxIframe.setAttribute('src', src + '?autoplay=1&enablejsapi=1');
+                lightboxVideoWrapper.style.display = 'block';
+            }
+            
+            lightbox.style.display = 'flex';
+            setTimeout(() => {
+                lightbox.classList.add('show');
+            }, 20);
+            document.body.classList.add('lightbox-open');
+        }
+        
+        function closeLightbox() {
+            lightbox.classList.remove('show');
+            setTimeout(() => {
+                lightbox.style.display = 'none';
+                // Reset Iframe to completely stop video playback
+                lightboxIframe.setAttribute('src', '');
+            }, 400);
+            document.body.classList.remove('lightbox-open');
+        }
+        
+        function showNext() {
+            if (activeItems.length <= 1) return;
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= activeItems.length) {
+                nextIndex = 0; // Wrap around
+            }
+            openLightbox(activeItems[nextIndex]);
+        }
+        
+        function showPrev() {
+            if (activeItems.length <= 1) return;
+            let prevIndex = currentIndex - 1;
+            if (prevIndex < 0) {
+                prevIndex = activeItems.length - 1; // Wrap around
+            }
+            openLightbox(activeItems[prevIndex]);
+        }
+        
+        // Bind events
+        mediaItems.forEach(item => {
+            item.addEventListener('click', () => openLightbox(item));
+        });
+        
+        closeBtn.addEventListener('click', closeLightbox);
+        
+        nextBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showNext();
+        });
+        
+        prevBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showPrev();
+        });
+        
+        // Close on background click
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+        
+        // Keybind controls
+        document.addEventListener('keydown', function(e) {
+            if (!lightbox.classList.contains('show')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+        });
+    });
+</script>
+{% endblock %}

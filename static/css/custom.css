@@ -1,0 +1,347 @@
+/* Custom Premium Design System for Bharatnatayam Landing Page */
+
+:root {
+    --bg-dark: #09090C;
+    --bg-card: rgba(18, 18, 24, 0.75);
+    --bg-card-hover: rgba(26, 26, 36, 0.85);
+    --border-color: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(212, 175, 55, 0.3);
+    
+    --text-primary: #F3F4F6;
+    --text-secondary: #9CA3AF;
+    
+    /* Vibrant curated colors */
+    --accent: #E5A93B; /* Warm Temple Gold */
+    --accent-glow: rgba(229, 169, 59, 0.4);
+    --primary-red: #D9383A; /* Kumkum Crimson */
+    --primary-red-glow: rgba(217, 56, 58, 0.3);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Typography styling */
+h1, h2, h3, h4, h5, h6, .logo-text {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.logo-text {
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--text-primary) !important;
+}
+
+.font-secondary {
+    font-family: 'Outfit', sans-serif;
+}
+
+.text-accent {
+    color: var(--accent);
+}
+
+.text-muted-custom {
+    color: var(--text-secondary);
+}
+
+/* Glassmorphism Navbar */
+.custom-navbar {
+    background-color: rgba(9, 9, 12, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 0;
+    transition: all 0.3s ease;
+}
+
+.custom-navbar .nav-link {
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+    color: var(--accent);
+}
+
+/* Accent Buttons */
+.btn-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, #C48723 100%);
+    color: #111;
+    border: none;
+    font-weight: 600;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px var(--accent-glow);
+    transition: all 0.3s ease;
+}
+
+.btn-accent:hover {
+    background: linear-gradient(135deg, #F3BA54 0%, var(--accent) 100%);
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 169, 59, 0.6);
+}
+
+.btn-accent:active {
+    transform: translateY(0);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    padding: 140px 0 100px 0;
+    background: radial-gradient(circle at 80% 20%, rgba(217, 56, 58, 0.12) 0%, rgba(9, 9, 12, 0) 60%),
+                radial-gradient(circle at 10% 80%, rgba(229, 169, 59, 0.08) 0%, rgba(9, 9, 12, 0) 50%);
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #FFFFFF 50%, #E5A93B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 35px;
+    line-height: 1.6;
+}
+
+.hero-img-wrapper {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-color);
+}
+
+.hero-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+.hero-img-wrapper:hover .hero-img {
+    transform: scale(1.03);
+}
+
+/* Cards & Sections */
+.section-title {
+    font-size: 2.25rem;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, #FFF 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.title-line {
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent);
+    margin: 0 auto 40px auto;
+    border-radius: 2px;
+}
+
+.section-about {
+    padding: 80px 0;
+    background: linear-gradient(180deg, var(--bg-dark) 0%, #111116 100%);
+}
+
+.custom-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
+    height: 100%;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.custom-card:hover {
+    transform: translateY(-8px);
+    background-color: var(--bg-card-hover);
+    border-color: var(--border-hover);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(229, 169, 59, 0.1);
+}
+
+.card-icon {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.custom-card:hover .card-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
+/* Forms */
+.form-section {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #111116 0%, var(--bg-dark) 100%);
+}
+
+.custom-form-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+}
+
+.form-control, .form-select {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: var(--accent);
+    color: var(--text-primary);
+    box-shadow: 0 0 10px rgba(229, 169, 59, 0.2);
+}
+
+.form-control::placeholder {
+    color: #555;
+}
+
+/* Table / Registration Display list */
+.custom-table {
+    color: var(--text-primary);
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.custom-table th {
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    padding: 12px 20px;
+}
+
+.custom-table tbody tr {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.custom-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.custom-table td {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.custom-table td:first-child {
+    border-left: 1px solid var(--border-color);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.custom-table td:last-child {
+    border-right: 1px solid var(--border-color);
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+/* Animations */
+.animate-glow {
+    animation: pulseGlow 2.5s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% {
+        text-shadow: 0 0 5px rgba(229, 169, 59, 0.4);
+    }
+    100% {
+        text-shadow: 0 0 15px rgba(229, 169, 59, 0.8), 0 0 25px rgba(229, 169, 59, 0.4);
+    }
+}
+
+/* Badge values */
+.badge-custom {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.badge-beginner {
+    background-color: rgba(13, 148, 136, 0.15);
+    color: #2dd4bf;
+    border: 1px solid rgba(13, 148, 136, 0.3);
+}
+
+.badge-intermediate {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-advanced {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Footer Section */
+.footer-section {
+    background-color: #050507;
+    border-top: 1px solid var(--border-color);
+}
+
+.border-secondary-custom {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.footer-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: var(--accent);
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    background-color: var(--accent);
+    color: #111;
+    transform: translateY(-2px);
+}

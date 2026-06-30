@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local development env variables (DO NOT COMMIT SECRETS)
+.env
+
+# Databases
+*.sqlite3
+*.sqlite3-journal
+
+# Compiled assets / user uploads
+staticfiles/
+media/
+media/gallery/
+
+# OS/IDE files
+.DS_Store
+.vscode/
+.idea/
+*.log
