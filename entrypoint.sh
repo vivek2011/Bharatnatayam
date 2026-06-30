@@ -11,8 +11,12 @@ else
 fi
 
 # Run migrations and collect static files
-python manage.py migrate
-python manage.py collectstatic --no-input
+echo "==> Running Django database migrations..."
+python manage.py migrate || { echo "ERROR: Django migration failed"; exit 1; }
+
+echo "==> Collecting static files..."
+python manage.py collectstatic --no-input || { echo "ERROR: Django collectstatic failed"; exit 1; }
 
 # Execute the main command (passed as arguments)
+echo "==> Executing startup command: $@"
 exec "$@"
