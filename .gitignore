@@ -12,8 +12,6 @@ __pycache__/
 
 # Compiled assets / user uploads
 staticfiles/
-media/
-media/gallery/
 
 # OS/IDE files
 .DS_Store
