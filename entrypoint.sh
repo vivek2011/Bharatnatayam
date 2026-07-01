@@ -1,13 +1,25 @@
 #!/bin/sh
 
+# Determine DB host/port from either explicit vars or DATABASE_URL
 if [ -n "$SQL_HOST" ] && [ -n "$SQL_PORT" ]; then
-    echo "Waiting for postgres ($SQL_HOST:$SQL_PORT)..."
-    while ! nc -z $SQL_HOST $SQL_PORT; do
-      sleep 0.1
+    DB_HOST="$SQL_HOST"
+    DB_PORT="$SQL_PORT"
+elif [ -n "$DATABASE_URL" ]; then
+    # Extract host and port from DATABASE_URL
+    # Format: postgres://user:pass@host:port/dbname
+    DB_HOST=$(echo "$DATABASE_URL" | sed -E 's|.*@([^:/]+)(:[0-9]+)?/.*|\1|')
+    DB_PORT=$(echo "$DATABASE_URL" | sed -E 's|.*@[^:]+:([0-9]+)/.*|\1|')
+    DB_PORT="${DB_PORT:-5432}"
+fi
+
+if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ]; then
+    echo "Waiting for postgres ($DB_HOST:$DB_PORT)..."
+    while ! nc -z "$DB_HOST" "$DB_PORT"; do
+        sleep 0.1
     done
     echo "PostgreSQL started"
 else
-    echo "SQL_HOST or SQL_PORT not defined, skipping wait check."
+    echo "No DB host/port found (SQL_HOST/SQL_PORT or DATABASE_URL). Skipping wait."
 fi
 
 # Run migrations and collect static files
