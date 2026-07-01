@@ -48,28 +48,28 @@
         </div>
         
         <div class="row g-4">
-            <div class="col-md-3">
+            <div class="col-sm-6 col-md-3">
                 <div class="custom-card text-center">
                     <div class="card-icon"><i class="bi bi-heart-pulse-fill"></i></div>
                     <h3>BHA-VA</h3>
                     <p class="text-muted-custom font-secondary mb-0">Expression and emotion. The dancer channels deep sentiments to narrate spiritual and mythic tales.</p>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-6 col-md-3">
                 <div class="custom-card text-center">
                     <div class="card-icon"><i class="bi bi-music-note-beamed"></i></div>
                     <h3>RA-GA</h3>
                     <p class="text-muted-custom font-secondary mb-0">Melodic frameworks. The classical Carnatic music notes that accompany and guide the dancer's feet.</p>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-6 col-md-3">
                 <div class="custom-card text-center">
                     <div class="card-icon"><i class="bi bi-hourglass-split"></i></div>
                     <h3>TA-LA</h3>
                     <p class="text-muted-custom font-secondary mb-0">Rhythm and meter. The strict mathematical beat intervals that govern the complexity of footwork.</p>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-6 col-md-3">
                 <div class="custom-card text-center">
                     <div class="card-icon"><i class="bi bi-stars"></i></div>
                     <h3>NA-TYA</h3>
@@ -142,15 +142,26 @@
         </div>
         {% endif %}
 
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-5">
+        <!-- Mobile-only compact header (hidden on lg+) -->
+        <div class="register-mobile-header d-lg-none text-center mb-4">
+            <span class="text-accent text-uppercase font-secondary fw-bold d-block mb-2" style="font-size: 0.8rem; letter-spacing: 0.2em;">Join Our Academy</span>
+            <h2 class="section-title mb-2">Begin Your Training</h2>
+            <p class="text-muted-custom font-secondary mb-0" style="font-size: 0.95rem;">
+                Register today. Classes held weekly for all ages &amp; experience levels.
+            </p>
+            <div class="title-line" style="margin-top: 16px; margin-bottom: 0;"></div>
+        </div>
+
+        <div class="row g-4 align-items-center">
+            <!-- Left info column: visible on desktop only -->
+            <div class="col-lg-5 d-none d-lg-flex flex-column">
                 <span class="text-accent text-uppercase font-secondary tracking-wide fw-bold d-block mb-3" style="letter-spacing: 0.15em;">Join Our Academy</span>
                 <h2 class="section-title text-start mb-3">Begin Your Training</h2>
                 <p class="text-muted-custom font-secondary mb-4">
                     Register today for our upcoming term. Classes are held weekly under expert guidance. Open to all age groups and experience levels.
                 </p>
                 <div class="d-flex align-items-center gap-3 mb-3">
-                    <div class="bg-card border p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-color: var(--border-color) !important;">
+                    <div class="register-icon-circle">
                         <i class="bi bi-clock-fill text-accent"></i>
                     </div>
                     <div>
@@ -159,7 +170,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <div class="bg-card border p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-color: var(--border-color) !important;">
+                    <div class="register-icon-circle">
                         <i class="bi bi-award-fill text-accent"></i>
                     </div>
                     <div>
@@ -168,26 +179,28 @@
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Form column: full width on mobile, 7/12 on desktop -->
             <div class="col-lg-7">
                 <div class="custom-form-card">
-                    <h3 class="mb-4 text-center">Class Enrollment Form</h3>
+                    <!-- Form heading: shown only on desktop (mobile has the header above) -->
+                    <h3 class="mb-4 text-center d-none d-lg-block">Class Enrollment Form</h3>
                     <form method="POST" action="{% url 'home' %}#register">
                         {% csrf_token %}
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-12 col-sm-6">
                                 <label for="name" class="form-label small text-muted-custom font-secondary">Full Name *</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="John Doe" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-sm-6">
                                 <label for="email" class="form-label small text-muted-custom font-secondary">Email Address *</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="john@example.com" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-sm-6">
                                 <label for="phone" class="form-label small text-muted-custom font-secondary">Phone Number *</label>
                                 <input type="tel" class="form-control" id="phone" name="phone" placeholder="+91 98765 43210" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-sm-6">
                                 <label for="experience_level" class="form-label small text-muted-custom font-secondary">Experience Level *</label>
                                 <select class="form-select" id="experience_level" name="experience_level" required>
                                     <option value="beginner" selected>Beginner (No prior experience)</option>
@@ -199,11 +212,33 @@
                                 <label for="message" class="form-label small text-muted-custom font-secondary">Message / Questions (Optional)</label>
                                 <textarea class="form-control" id="message" name="message" rows="3" placeholder="Tell us about your background or requirements..."></textarea>
                             </div>
-                            <div class="col-12 mt-4 text-center">
-                                <button type="submit" class="btn btn-accent px-5 py-3 w-100 font-secondary fw-bold text-uppercase">Submit Registration</button>
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-accent py-3 w-100 font-secondary fw-bold text-uppercase">Submit Registration</button>
                             </div>
                         </div>
                     </form>
+                </div>
+
+                <!-- Feature pills: shown only on mobile below the form -->
+                <div class="d-flex d-lg-none flex-column gap-3 mt-4">
+                    <div class="register-feature-pill">
+                        <div class="register-icon-circle">
+                            <i class="bi bi-clock-fill text-accent"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 font-secondary text-light fw-bold">Flexible Schedules</h6>
+                            <span class="text-muted-custom small font-secondary">Weekend and evening slots available</span>
+                        </div>
+                    </div>
+                    <div class="register-feature-pill">
+                        <div class="register-icon-circle">
+                            <i class="bi bi-award-fill text-accent"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 font-secondary text-light fw-bold">Accredited Certifications</h6>
+                            <span class="text-muted-custom small font-secondary">Diplomas and stage debuts (Arangetram) support</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
