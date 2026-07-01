@@ -5,11 +5,9 @@ if [ -n "$SQL_HOST" ] && [ -n "$SQL_PORT" ]; then
     DB_HOST="$SQL_HOST"
     DB_PORT="$SQL_PORT"
 elif [ -n "$DATABASE_URL" ]; then
-    # Extract host and port from DATABASE_URL
-    # Format: postgres://user:pass@host:port/dbname
-    DB_HOST=$(echo "$DATABASE_URL" | sed -E 's|.*@([^:/]+)(:[0-9]+)?/.*|\1|')
-    DB_PORT=$(echo "$DATABASE_URL" | sed -E 's|.*@[^:]+:([0-9]+)/.*|\1|')
-    DB_PORT="${DB_PORT:-5432}"
+    # Use Python's urlparse to reliably extract host and port (handles missing port)
+    DB_HOST=$(python3 -c "from urllib.parse import urlparse; u=urlparse('$DATABASE_URL'); print(u.hostname)")
+    DB_PORT=$(python3 -c "from urllib.parse import urlparse; u=urlparse('$DATABASE_URL'); print(u.port or 5432)")
 fi
 
 if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ]; then
